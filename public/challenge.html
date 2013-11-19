@@ -129,7 +129,7 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="/bufferloader.js"></script>
 <script>
-    var wsUrl = window.location.hostname === 'localhost' ? 'http://localhost' : 'http://secret-reef-1750.herokuapp.com/';
+    var wsUrl = window.location.hostname === 'localhost' ? 'http://localhost' : 'http://twiliosurvivor.herokuapp.com/';
     var socket = io.connect(wsUrl);
     
     socket.on('connection', function (data) {
