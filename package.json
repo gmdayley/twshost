@@ -1,0 +1,14 @@
+{
+  "name": "twiliosurvivor",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "~3.4.4",
+    "socket.io": "~0.9.16",
+    "twilio": "~1.4.0",
+    "underscore": "~1.5.2"
+  },
+  "engines": {
+    "node": "0.10.x",
+    "npm": "1.4.x"
+  }
+}

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Twilio Survivor Challenge</title>
+
+    <link href='http://fonts.googleapis.com/css?family=Frijole' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Prosto+One' rel='stylesheet' type='text/css'>
+
+    <style type="text/css">
+
+            /*
+    #FE0016
+    #FC491F
+    #FD9331
+    #7E952C
+    #004A2B
+    #01012B
+    #7E002D
+    */
+
+        body {
+            /*background: #333;*/
+            background: url(jungle4.jpg);
+            font-family: 'Prosto One', cursive;
+        }
+
+        body>#container>h1 {
+            font-family: 'Frijole', cursive;
+            color: white;
+        }
+
+        ol.pt li h1 {
+            color: white;
+            margin: 0;
+            font-size: 1.4em;
+            /*font-family: 'Frijole', cursive;*/
+
+        }
+
+        ol.pt {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        ol.pt > li {
+            display: inline-block;
+            text-align: center;
+            line-height: 3em;
+            width: 250px;
+        }
+
+        ol.pt > li > ul {
+            position: absolute;
+
+            height: 600px;
+            width: 250px;
+            background: #ccc;
+            opacity: .5;
+            z-index: -1;
+
+            margin: 0;
+            margin-top: 15px;
+            padding: 0;
+            list-style-type: none;
+            text-align: left;
+            /*line-height: 1.0em;*/
+        }
+
+        ol.pt > li > ul > li {
+            line-height: 1.0em;
+            font-size: 1.5em;
+            padding: 5px;
+            opacity: 1;
+        }
+
+
+        ol.pt > li:nth-child(1) {
+            border-bottom: 10px solid #FC491F;
+        }
+
+        ol.pt > li:nth-child(2) {
+            border-bottom: 10px solid #7E952C;
+        }
+
+        ol.pt > li:nth-child(3) {
+            border-bottom: 10px solid #004A2B;
+        }
+
+        ol.pt > li:nth-child(4) {
+            border-bottom: 10px solid #7E002D;
+        }
+
+        #container {
+            /*position: relative;*/
+            text-align: center;
+            width: 1020px;
+            margin: 0px auto;
+        }
+    </style>
+</head>
+<body>
+
+<div id="container">
+    <h1>Utah JS Survivior</h1>
+
+    <ol class="pt">
+        <li><h1>Start Here</h1>
+            <ul id="c0">
+            </ul>
+        </li>
+        <li><h1>Challenge 1</h1>
+            <ul id="c1">
+            </ul>
+        </li>
+        <li><h1>Challenge 2</h1>
+            <ul id="c2">
+            </ul>
+        </li>
+        <li><h1>Challenge 3</h1>
+            <ul id="c3">
+            </ul>
+        </li>
+    </ol>
+</div>
+
+
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/bufferloader.js"></script>
+<script>
+    var wsUrl = window.location.hostname === 'localhost' ? 'http://localhost' : 'http://secret-reef-1750.herokuapp.com/';
+    var socket = io.connect(wsUrl);
+    
+    socket.on('connection', function (data) {
+        console.log('connected', data);
+
+        for(var i=0; i < data.length; i++){
+            positionPlayer(data[i]);
+        }    
+    });
+
+    socket.on('msg', function(data) {
+        positionPlayer(data);
+    });
+
+    socket.on('playsound', function(data){
+        console.log('playsound', data);
+        playSound(data.name, data.start);
+    });
+
+
+    function playSound(name, start) {
+        var buffer = soundBuffers[name] || soundBuffers['daffy'];
+        if(buffer){
+            var source = context.createBufferSource();
+            source.buffer = buffer;
+            source.connect(context.destination);
+            source.start(start || 0); 
+        }        
+    }
+
+    function positionPlayer(player){
+        console.log('positioning player', player);
+        var li = getPlayer(player);
+        $('#c'+player.state).append(li.detach());
+    }
+
+    function getPlayer(data){
+        var id = getId(data.number);
+        console.log(id);
+        var el = $('#' + id);
+
+        console.log(el);
+
+        if(!el[0]){
+            var player = $('<li></li>');
+            player.attr('id', id);
+            console.log(data.name);
+            player.text(data.name);
+        }
+        else{
+            player = el;
+        }
+        return player;
+    }
+
+    function getId(num){
+        return num.substring(1,num.length);
+    }
+
+
+    function audioInit() {
+      // Fix up prefixing
+      window.AudioContext = window.AudioContext || window.webkitAudioContext;
+      context = new AudioContext();
+
+      bufferLoader = new BufferLoader(
+        context,
+        [
+          '../sounds/survivor.mp3',
+          '../sounds/survivorsready.mp3',
+          '../sounds/daffyduck.mp3'
+        ],
+        finishedLoading
+        );
+
+      bufferLoader.load();
+    }
+
+
+    var soundBuffers = {};
+
+    function finishedLoading(bufferList) {
+        soundBuffers['theme'] = bufferList[0];
+        soundBuffers['readygo'] = bufferList[1];
+        soundBuffers['daffy'] = bufferList[2];
+
+//        playSound('readygo', 1);
+    }
+
+audioInit();
+
+</script>
+
+</body>
+</html>

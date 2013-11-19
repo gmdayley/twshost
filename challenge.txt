@@ -1,0 +1,7 @@
+1.  Using dev console, send text to 801.623.6842 with "hello <YOUR NAME>"
+
+2.  Using the twilio api, send text to 801.623.6842 with "CALLME", keep the reply text your will need it.
+
+3.  Call aaron and play the mp3 at the location sent you on the last challenge.  If successful we will text back your twilio number a secret code that you will consume and send a text to 801.623.6842.
+
+4.  Make a call to Aaron, and consume 5 numbers.  Total the numbers and send back the response to 801.623.6842.  If successful you will recieve a phone call that you must transcribe using the twilio api and then send back a text with "winner <TRANSCRIPTION TEXT>"
