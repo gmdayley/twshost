@@ -114,7 +114,7 @@ app.post("/host/sms", function(request, response) {
         	// advancePlayer(player, 0, 1);
         	// break;
         case 'CALLME' :
-            twiml.sms("MP3 http://twilio.coderighteo.us/cmm.mp3");
+            twiml.sms("MP3 http://twiliosurvivor.coderighteo.us/cmm.mp3");
             advancePlayer(player, 0, 1);
             break;
         case 'TWILIOROCKS':
@@ -124,7 +124,7 @@ app.post("/host/sms", function(request, response) {
             twilioClient.makeCall({
                 to: sms.from,
                 from:'+18016236842',
-                url: 'http://twilio.coderighteo.us/host/congrats'
+                url: 'http://twiliosurvivor.coderighteo.us/host/congrats'
             });
         	break;
         case 'WINNER':
